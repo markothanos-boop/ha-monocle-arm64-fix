@@ -11,6 +11,7 @@ MONOCLE_CONFIG="/etc/monocle/monocle.json"
 MONOCLE_TOKEN=$(bashio::config 'monocle_token')
 AUTO_DISCOVER=$(bashio::config 'auto_discover')
 REFRESH_INTERVAL=$(bashio::config 'refresh_interval')
+GATEWAY_HOST=$(bashio::config 'gateway_host')
 
 if [ -z "$MONOCLE_TOKEN" ] || [ "$MONOCLE_TOKEN" = "null" ]; then
     bashio::log.error "Monocle token not configured!"
@@ -30,6 +31,17 @@ fi
 if [ "$AUTO_DISCOVER" = "true" ] && [ ! -f "$MONOCLE_CONFIG" ]; then
     bashio::log.error "Monocle configuration not generated!"
     exit 1
+fi
+
+# Advertise the LAN address rather than the container bridge address.
+: > /etc/monocle/monocle.properties
+if [ -n "$GATEWAY_HOST" ] && [ "$GATEWAY_HOST" != "null" ]; then
+    if ! [[ "$GATEWAY_HOST" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        bashio::log.error "gateway_host must be an IPv4 address"
+        exit 1
+    fi
+    printf 'rtsp.register.host=%s\n' "$GATEWAY_HOST" > /etc/monocle/monocle.properties
+    bashio::log.info "Advertising gateway on $GATEWAY_HOST:443 in the local network"
 fi
 
 # Get initial config hash
@@ -61,7 +73,7 @@ if [ "$AUTO_DISCOVER" = "true" ]; then
 fi
 
 bashio::log.info "Starting Monocle Gateway..."
-bashio::log.info "Make sure port 443 is forwarded to this add-on"
+bashio::log.info "TCP port 443 must be reachable from the local network; no Internet port forwarding is required"
 
 # Start Monocle Gateway (in foreground to keep container alive)
 cd /opt/monocle
