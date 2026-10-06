@@ -15,6 +15,7 @@ RUN apk add --no-cache \
     jq \
     openjdk11-jre-headless \
     ca-certificates \
+    openssl \
     && update-ca-certificates \
     && pip3 install --no-cache-dir requests
 
@@ -33,7 +34,7 @@ RUN mkdir -p /opt/monocle /etc/monocle && \
 # Copy scripts
 COPY discover_cameras.py /opt/monocle/
 COPY run.sh /opt/monocle/
-RUN chmod +x /opt/monocle/run.sh
+RUN bash -n /opt/monocle/run.sh && chmod +x /opt/monocle/run.sh
 
 WORKDIR /opt/monocle
 
