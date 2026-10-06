@@ -1,3 +1,3 @@
-name: Robson Felix's Add-ons
-url: https://github.com/robsonfelix/robsonfelix-hass-addons
-maintainer: Robson Felix
+name: Monocle ARM64 Fix
+url: https://github.com/markothanos-boop/ha-monocle-arm64-fix
+maintainer: markothanos-boop (fork of Robson Felix)
