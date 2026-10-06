@@ -19,12 +19,11 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir requests
 
 # Download Monocle Gateway v0.0.6
-ARG BUILD_ARCH
 RUN mkdir -p /opt/monocle /etc/monocle && \
-    case "${BUILD_ARCH}" in \
-        amd64) MONOCLE_ARCH="alpine-x64" ;; \
-        aarch64) MONOCLE_ARCH="alpine-arm64" ;; \
-        *) MONOCLE_ARCH="alpine-x64" ;; \
+    case "$(uname -m)" in \
+        x86_64|amd64) MONOCLE_ARCH="alpine-x64" ;; \
+        aarch64|arm64) MONOCLE_ARCH="alpine-arm64" ;; \
+        *) echo "Unsupported Monocle architecture: $(uname -m)" >&2; exit 1 ;; \
     esac && \
     curl -fsSL "https://files.monoclecam.com/monocle-gateway/linux/monocle-gateway-${MONOCLE_ARCH}-v0.0.6.tar.gz" -o /tmp/monocle.tar.gz && \
     tar -xzf /tmp/monocle.tar.gz -C /opt/monocle && \
