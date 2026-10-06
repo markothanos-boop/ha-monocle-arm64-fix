@@ -1,8 +1,8 @@
-name: Auto-Monocle
+name: Auto-Monocle ARM64 Fix
 description: Auto-discover HA cameras and expose them to Alexa via Monocle Gateway
-version: "0.1.11"
+version: "0.1.12"
 slug: auto-monocle
-url: https://github.com/robsonfelix/robsonfelix-hass-addons
+url: https://github.com/markothanos-boop/ha-monocle-arm64-fix
 arch:
   - amd64
   - aarch64
@@ -11,7 +11,7 @@ boot: auto
 init: false
 ingress: false
 panel_icon: mdi:camera-account
-panel_title: Auto-Monocle
+panel_title: Auto-Monocle ARM64 Fix
 homeassistant_api: true
 auth_api: true
 hassio_api: true
@@ -19,7 +19,7 @@ map:
   - homeassistant_config:ro
 options:
   monocle_token: ""
-  auto_discover: true
+  auto_discover: false
   refresh_interval: 300
   stream_quality: "high"
   camera_filters: []
