@@ -66,8 +66,11 @@ if [ -n "$GATEWAY_FQDN" ] && [ "$GATEWAY_FQDN" != "null" ]; then
         exit 1
     fi
     CUSTOM_CERT=true
+    # Monocle joins SSL paths to its working directory, even for absolute paths.
+    ln -sfn "$CERT_PATH" /opt/monocle/gateway-fullchain.pem
+    ln -sfn "$KEY_PATH" /opt/monocle/gateway-privkey.pem
     printf 'rtsp.register.fqdn=%s\nrtsp.ssl.cert=%s\nrtsp.ssl.key=%s\n' \
-        "$GATEWAY_FQDN" "$CERT_PATH" "$KEY_PATH" >> "$PROPERTIES"
+        "$GATEWAY_FQDN" gateway-fullchain.pem gateway-privkey.pem >> "$PROPERTIES"
     bashio::log.info "Using validated custom certificate for $GATEWAY_FQDN"
 fi
 
