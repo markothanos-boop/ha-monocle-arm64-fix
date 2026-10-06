@@ -1,6 +1,6 @@
 name: Auto-Monocle ARM64 Fix
 description: Auto-discover HA cameras and expose them to Alexa via Monocle Gateway
-version: "0.1.14"
+version: "0.1.15"
 slug: auto-monocle
 url: https://github.com/markothanos-boop/ha-monocle-arm64-fix
 arch:
